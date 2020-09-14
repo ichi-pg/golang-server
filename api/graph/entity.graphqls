@@ -1,0 +1,7 @@
+type User {
+  userID: ID!
+  name: String!
+  createdAt: Time!
+}
+
+scalar Time

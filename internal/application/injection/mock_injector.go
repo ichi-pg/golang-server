@@ -1,0 +1,21 @@
+package injection
+
+import (
+	"github.com/ichi-pg/golang-server/internal/application"
+	"github.com/ichi-pg/golang-server/internal/infrastructure/mock"
+)
+
+type mockInjector struct {
+}
+
+// MockInjector はapplication層以下の依存関係を注入します。
+func MockInjector() application.Injector {
+	return mockInjector{}
+}
+
+func (i mockInjector) UserUsecase() application.UserUsecase {
+	return application.NewUserUsecase(
+		mock.UserRepository(),
+		mock.FirebaseRepository(),
+	)
+}

@@ -1,0 +1,34 @@
+name: deploy-dev
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    services:
+      redis:
+        image: redis
+        ports:
+          - 6379:6379
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        with:
+          project_id: ${{ secrets.PROJECT_ID_DEV }}
+          service_account_key: ${{ secrets.GCP_KEY_DEV }}
+          export_default_credentials: true
+
+      - run: go test ./...
+        env:
+          PROJECT_ID: ${{ secrets.PROJECT_ID_DEV }}
+          NAMESPACE: ${{ github.sha }}
+          REDIS_ADDR: localhost:6379
+
+      - name: deploy
+        run: |
+          sed -i "s/PROJECT_ID:.*/PROJECT_ID: ${{ secrets.PROJECT_ID_DEV }}/g" configs/dev/app.yaml
+          gcloud app deploy configs/dev/app.yaml --quiet --version=${{ github.sha }}

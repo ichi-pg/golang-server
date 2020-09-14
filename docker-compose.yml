@@ -1,0 +1,18 @@
+version: '3.5'
+
+x-template: &go-template
+  image: golang:1.12
+  env_file: .env
+  depends_on:
+    - redis
+  volumes:
+    - ./:/go/src/app:z
+  working_dir: /go/src/app
+
+services:
+  test:
+    <<: *go-template
+    command: go test ./...
+
+  redis:
+    image: redis

@@ -1,0 +1,9 @@
+runtime: go112
+
+main: ./cmd
+
+env_variables:
+  DEBUG_MODE: true
+  PROJECT_ID:
+  NAMESPACE: dev
+  WHITE_IP:
