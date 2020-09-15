@@ -22,6 +22,7 @@ func TestGraphQuery(t *testing.T) {
 	log := logrus.NewEntry(logrus.New())
 	i := injection.MockInjector()
 	user := mock.NewUser()
+	normalMutation := " mutation { updateUserName ( name : \\\"fuga\\\" ) { name } } "
 
 	// Test case: Get user.
 	{
@@ -48,9 +49,7 @@ func TestGraphQuery(t *testing.T) {
 
 	// Test case: Update user.
 	{
-		mutation := " mutation { updateUserName ( name : \\\"fuga\\\" ) { name } } "
-
-		body := strings.NewReader(fmt.Sprintf("{ \"query\" : \"%s\" }", mutation))
+		body := strings.NewReader(fmt.Sprintf("{ \"query\" : \"%s\" }", normalMutation))
 
 		req := httptest.NewRequest(http.MethodPost, "/", body)
 		rec := httptest.NewRecorder()
@@ -93,7 +92,7 @@ func TestGraphQuery(t *testing.T) {
 	}
 
 	// Test case: Internal server error.
-	//TODO 異常値のモックデータを作れば可能
+	//TODO
 
 	// Test case: Validation error.
 	{
@@ -120,7 +119,7 @@ func TestGraphQuery(t *testing.T) {
 
 	// Test case: Parse error.
 	{
-		mutation := " mutation { { user { profile { name } } } } "
+		mutation := " mutation { { name } } "
 
 		body := strings.NewReader(fmt.Sprintf("{ \"query\" : \"%s\" }", mutation))
 
@@ -143,9 +142,7 @@ func TestGraphQuery(t *testing.T) {
 
 	// Test case: Operation not found.
 	{
-		mutation := " mutation { updateProfile( profile : { name : \\\"hoge\\\" } ) { user { profile { name } } } } "
-
-		body := strings.NewReader(fmt.Sprintf("{ \"mutation\" : \"%s\" }", mutation))
+		body := strings.NewReader(fmt.Sprintf("{ \"mutation\" : \"%s\" }", normalMutation))
 
 		req := httptest.NewRequest(http.MethodPost, "/", body)
 		rec := httptest.NewRecorder()
@@ -166,9 +163,7 @@ func TestGraphQuery(t *testing.T) {
 
 	// Test case: Transport not supported.
 	{
-		mutation := " mutation { updateProfile( profile : { name : \\\"hoge\\\" } ) { user { profile { name } } } } "
-
-		body := strings.NewReader(fmt.Sprintf("{ \"mutation\" : \"%s\" }", mutation))
+		body := strings.NewReader(fmt.Sprintf("{ \"mutation\" : \"%s\" }", normalMutation))
 
 		req := httptest.NewRequest(http.MethodPost, "/", body)
 		rec := httptest.NewRecorder()
@@ -189,9 +184,7 @@ func TestGraphQuery(t *testing.T) {
 
 	// Test case: Json body could not be decoded.
 	{
-		mutation := " mutation { updateProfile( profile : { name : \\\"hoge\\\" } ) { user { profile { name } } } } "
-
-		body := strings.NewReader(mutation)
+		body := strings.NewReader(normalMutation)
 
 		req := httptest.NewRequest(http.MethodPost, "/", body)
 		rec := httptest.NewRecorder()

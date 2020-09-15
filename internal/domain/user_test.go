@@ -21,14 +21,10 @@ func TestDummyID_Check(t *testing.T) {
 func TestUser_Auth(t *testing.T) {
 	t.Parallel()
 
-	token := UserToken(uuid.NewV4().String())
-
-	user := &User{
-		Token: token,
-	}
+	user := newUser()
 
 	// Test case: Valid.
-	assert.NoError(t, user.Auth(token))
+	assert.NoError(t, user.Auth(user.Token))
 
 	// Test case: Invalid.
 	assert.Error(t, user.Auth((UserToken(uuid.NewV4().String()))))
@@ -37,7 +33,15 @@ func TestUser_Auth(t *testing.T) {
 func TestUser_UpdateName(t *testing.T) {
 	t.Parallel()
 
-	//TODO
+	// Test case: Valid
+	assert.NoError(t, newUser().UpdateName(UserName("aaaa")))
+
+	// Test case: Invalid
+	assert.Error(t, newUser().UpdateName(UserName("")))
+
+	// Test case: Same name
+	user := newUser()
+	assert.NoError(t, user.UpdateName(user.Name))
 }
 
 func TestNewDummyUser(t *testing.T) {

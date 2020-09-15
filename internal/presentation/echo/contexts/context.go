@@ -18,7 +18,11 @@ func SetUser(c echo.Context, u *domain.User) {
 
 // User はユーザーをコンテキストから取り出します。
 func User(c echo.Context) *domain.User {
-	return c.Get(user).(*domain.User)
+	v := c.Get(user)
+	if v == nil {
+		return nil
+	}
+	return v.(*domain.User)
 }
 
 // SetInjector は依存関係をコンテキストに追加します。
@@ -28,5 +32,9 @@ func SetInjector(c echo.Context, i application.Injector) {
 
 // Injector は依存関係をコンテキストから取り出します。
 func Injector(c echo.Context) application.Injector {
-	return c.Get(injector).(application.Injector)
+	v := c.Get(injector)
+	if v == nil {
+		return nil
+	}
+	return v.(application.Injector)
 }

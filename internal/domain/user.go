@@ -74,6 +74,9 @@ func (user *User) Auth(token UserToken) error {
 
 // UpdateName はユーザー名を変更します。
 func (user *User) UpdateName(name UserName) error {
+	if err := name.Check(); err != nil {
+		return err
+	}
 	user.Name = name
 	return nil
 }

@@ -4,6 +4,7 @@ import (
 	"os"
 
 	submoduleMiddlewre "github.com/ichi-pg/golang-middleware/middleware"
+	"github.com/ichi-pg/golang-server/internal/infrastructure/mock"
 	"github.com/ichi-pg/golang-server/internal/pkg/env"
 	"github.com/ichi-pg/golang-server/internal/presentation/echo/handler"
 	"github.com/ichi-pg/golang-server/internal/presentation/echo/middleware"
@@ -24,9 +25,8 @@ func Start() error {
 
 	{
 		graph := e.Group("/api/graph")
-		//TODO
-		// graph.Use(submoduleMiddlewre.Maintenance())
-		// graph.Use(submoduleMiddlewre.ClientVersion())
+		graph.Use(submoduleMiddlewre.Maintenance(mock.MaintenanceRepository()))
+		graph.Use(submoduleMiddlewre.ClientVersion(mock.ClientVersionRepository()))
 		graph.Use(middleware.DummyAuth(), middleware.FirebaseAuth(), middleware.UserAuth())
 		graph.Use(middleware.Authorized())
 		graph.POST("/query", handler.GraphQuery)
