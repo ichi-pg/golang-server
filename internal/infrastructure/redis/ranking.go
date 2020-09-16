@@ -18,10 +18,19 @@ func RankingRepository() domain.RankingRepository {
 	return rankingRepository{}
 }
 
-func (r rankingRepository) Rankers(c context.Context, offset, limit int64) ([]*domain.Ranker, error) {
-	rankers := []*domain.Ranker{}
+func (r rankingRepository) add(c context.Context, userID domain.UserID, score int64) error {
+	return runWithClient(func(cli *redis.Client) error {
+		return cli.ZAdd(ranking, redis.Z{
+			Member: string(userID),
+			Score:  float64(score),
+		}).Err()
+	})
+}
+
+func (r rankingRepository) Rankers(c context.Context, offset, limit int64) ([]domain.Ranker, error) {
+	rankers := []domain.Ranker{}
 	err := runWithClient(func(cli *redis.Client) error {
-		res, err := cli.ZRevRangeWithScores(ranking, offset, offset+limit).Result()
+		res, err := cli.ZRevRangeWithScores(ranking, offset, offset+limit-1).Result()
 		if err != nil {
 			return err
 		}
@@ -37,7 +46,7 @@ func (r rankingRepository) Rankers(c context.Context, offset, limit int64) ([]*d
 				prevRank = rank
 				prevScore = score
 			}
-			rankers = append(rankers, &domain.Ranker{
+			rankers = append(rankers, domain.Ranker{
 				UserID: domain.UserID(v.Member.(string)),
 				Rank:   rank,
 				Score:  score,
@@ -47,5 +56,3 @@ func (r rankingRepository) Rankers(c context.Context, offset, limit int64) ([]*d
 	})
 	return rankers, err
 }
-
-//TODO test code

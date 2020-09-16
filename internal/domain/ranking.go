@@ -13,5 +13,5 @@ type Ranker struct {
 
 // RankingRepository はランキングのCRUDを抽象化します。
 type RankingRepository interface {
-	Rankers(c context.Context, offset, limit int64) ([]*Ranker, error)
+	Rankers(c context.Context, offset, limit int64) ([]Ranker, error)
 }

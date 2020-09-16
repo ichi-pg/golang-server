@@ -16,10 +16,10 @@ func newRanker(ranker *domain.Ranker) *generated.Ranker {
 	}
 }
 
-func newRankers(rankers []*domain.Ranker) []*generated.Ranker {
+func newRankers(rankers []domain.Ranker) []*generated.Ranker {
 	res := make([]*generated.Ranker, len(rankers))
 	for i, ranker := range rankers {
-		res[i] = newRanker(ranker)
+		res[i] = newRanker(&ranker)
 	}
 	return res
 }

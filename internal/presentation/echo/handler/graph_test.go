@@ -42,8 +42,8 @@ func TestGraphQuery(t *testing.T) {
 		contexts.SetUser(c, user)
 
 		if assert.NoError(t, GraphQuery(c)) {
-			assert.Equal(t, http.StatusOK, rec.Code)
-			assert.Equal(t, fmt.Sprintf("{\"data\":{\"user\":{\"name\":\"hoge\"}}}"), rec.Body.String())
+			assert.Equal(t, rec.Code, http.StatusOK)
+			assert.Equal(t, rec.Body.String(), fmt.Sprintf("{\"data\":{\"user\":{\"name\":\"hoge\"}}}"))
 		}
 	}
 
@@ -63,8 +63,8 @@ func TestGraphQuery(t *testing.T) {
 		contexts.SetUser(c, user)
 
 		if assert.NoError(t, GraphQuery(c)) {
-			assert.Equal(t, http.StatusOK, rec.Code)
-			assert.Equal(t, "{\"data\":{\"updateUserName\":{\"name\":\"fuga\"}}}", rec.Body.String())
+			assert.Equal(t, rec.Code, http.StatusOK)
+			assert.Equal(t, rec.Body.String(), "{\"data\":{\"updateUserName\":{\"name\":\"fuga\"}}}")
 		}
 	}
 
@@ -86,8 +86,8 @@ func TestGraphQuery(t *testing.T) {
 		contexts.SetUser(c, user)
 
 		if assert.NoError(t, GraphQuery(c)) {
-			assert.Equal(t, http.StatusBadRequest, rec.Code)
-			assert.Equal(t, "{\"errors\":[{\"message\":\"ユーザー名が空です。\",\"path\":[\"updateUserName\"],\"extensions\":{\"status\":400}}],\"data\":null}", rec.Body.String())
+			assert.Equal(t, rec.Code, http.StatusBadRequest)
+			assert.Equal(t, rec.Body.String(), "{\"errors\":[{\"message\":\"ユーザー名が空です。\",\"path\":[\"updateUserName\"],\"extensions\":{\"status\":400}}],\"data\":null}")
 		}
 	}
 
@@ -111,8 +111,8 @@ func TestGraphQuery(t *testing.T) {
 		contexts.SetUser(c, user)
 
 		if assert.NoError(t, GraphQuery(c)) {
-			assert.Equal(t, http.StatusUnprocessableEntity, rec.Code)
-			assert.Equal(t, "{\"errors\":[{\"message\":\"Field \\\"updateUserName\\\" argument \\\"name\\\" of type \\\"String!\\\" is required but not provided.\",\"locations\":[{\"line\":1,\"column\":13}],\"extensions\":{\"code\":\"GRAPHQL_VALIDATION_FAILED\"}}],\"data\":null}", rec.Body.String())
+			assert.Equal(t, rec.Code, http.StatusUnprocessableEntity)
+			assert.Equal(t, rec.Body.String(), "{\"errors\":[{\"message\":\"Field \\\"updateUserName\\\" argument \\\"name\\\" of type \\\"String!\\\" is required but not provided.\",\"locations\":[{\"line\":1,\"column\":13}],\"extensions\":{\"code\":\"GRAPHQL_VALIDATION_FAILED\"}}],\"data\":null}")
 		}
 	}
 
@@ -134,8 +134,8 @@ func TestGraphQuery(t *testing.T) {
 		contexts.SetUser(c, user)
 
 		if assert.NoError(t, GraphQuery(c)) {
-			assert.Equal(t, http.StatusUnprocessableEntity, rec.Code)
-			assert.Equal(t, "{\"errors\":[{\"message\":\"Expected Name, found {\",\"locations\":[{\"line\":1,\"column\":13}],\"extensions\":{\"code\":\"GRAPHQL_PARSE_FAILED\"}}],\"data\":null}", rec.Body.String())
+			assert.Equal(t, rec.Code, http.StatusUnprocessableEntity)
+			assert.Equal(t, rec.Body.String(), "{\"errors\":[{\"message\":\"Expected Name, found {\",\"locations\":[{\"line\":1,\"column\":13}],\"extensions\":{\"code\":\"GRAPHQL_PARSE_FAILED\"}}],\"data\":null}")
 		}
 	}
 
@@ -155,8 +155,8 @@ func TestGraphQuery(t *testing.T) {
 		contexts.SetUser(c, user)
 
 		if assert.NoError(t, GraphQuery(c)) {
-			assert.Equal(t, http.StatusBadRequest, rec.Code)
-			assert.Equal(t, "{\"errors\":[{\"message\":\"operation  not found\"}],\"data\":null}", rec.Body.String())
+			assert.Equal(t, rec.Code, http.StatusBadRequest)
+			assert.Equal(t, rec.Body.String(), "{\"errors\":[{\"message\":\"operation  not found\"}],\"data\":null}")
 		}
 	}
 
@@ -176,8 +176,8 @@ func TestGraphQuery(t *testing.T) {
 		contexts.SetUser(c, user)
 
 		if assert.NoError(t, GraphQuery(c)) {
-			assert.Equal(t, http.StatusBadRequest, rec.Code)
-			assert.Equal(t, "{\"errors\":[{\"message\":\"transport not supported\"}],\"data\":null}", rec.Body.String())
+			assert.Equal(t, rec.Code, http.StatusBadRequest)
+			assert.Equal(t, rec.Body.String(), "{\"errors\":[{\"message\":\"transport not supported\"}],\"data\":null}")
 		}
 	}
 
@@ -197,8 +197,8 @@ func TestGraphQuery(t *testing.T) {
 		contexts.SetUser(c, user)
 
 		if assert.NoError(t, GraphQuery(c)) {
-			assert.Equal(t, http.StatusBadRequest, rec.Code)
-			assert.Equal(t, "{\"errors\":[{\"message\":\"json body could not be decoded: invalid character 'm' looking for beginning of value\"}],\"data\":null}", rec.Body.String())
+			assert.Equal(t, rec.Code, http.StatusBadRequest)
+			assert.Equal(t, rec.Body.String(), "{\"errors\":[{\"message\":\"json body could not be decoded: invalid character 'm' looking for beginning of value\"}],\"data\":null}")
 		}
 	}
 }

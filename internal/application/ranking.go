@@ -17,8 +17,6 @@ func NewRankingUsecase(repo domain.RankingRepository) RankingUsecase {
 }
 
 // Rankers はランキングのユーザーリストを返します。
-func (u RankingUsecase) Rankers(c AuthContext, offset, limit int64) ([]*domain.Ranker, error) {
+func (u RankingUsecase) Rankers(c AuthContext, offset, limit int64) ([]domain.Ranker, error) {
 	return u.repo.Rankers(c.Context, offset, limit)
 }
-
-//TODO test code

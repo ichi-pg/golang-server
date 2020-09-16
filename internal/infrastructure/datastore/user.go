@@ -23,10 +23,7 @@ func (r userRepository) ByUserID(c context.Context, userID domain.UserID) (*doma
 	err := runWithClient(c, func(cli *datastore.Client) error {
 		return cli.Get(c, key, user)
 	})
-	if err != nil {
-		return nil, err
-	}
-	return user, nil
+	return user, err
 }
 
 func (r userRepository) ByDummyID(c context.Context, dummyID domain.DummyID) (*domain.User, error) {
