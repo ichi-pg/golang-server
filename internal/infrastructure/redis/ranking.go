@@ -21,7 +21,7 @@ func RankingRepository() domain.RankingRepository {
 func (r rankingRepository) Rankers(c context.Context, offset, limit int64) ([]*domain.Ranker, error) {
 	rankers := []*domain.Ranker{}
 	err := runWithClient(func(cli *redis.Client) error {
-		res, err := cli.ZRangeWithScores(ranking, offset, offset+limit).Result()
+		res, err := cli.ZRevRangeWithScores(ranking, offset, offset+limit).Result()
 		if err != nil {
 			return err
 		}
