@@ -10,7 +10,7 @@ func newUser(user *domain.User) *generated.User {
 		return nil
 	}
 	return &generated.User{
-		UserID:    string(user.ID),
+		ID:        string(user.ID),
 		Name:      string(user.Name),
 		CreatedAt: user.CreatedAt,
 	}

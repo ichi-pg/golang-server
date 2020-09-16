@@ -40,7 +40,7 @@ func (r userRepository) ByFirebaseID(c context.Context, firebaseID domain.Fireba
 }
 
 func (r userRepository) byQuery(c context.Context, q *datastore.Query) (*domain.User, error) {
-	var users []*domain.User
+	users := []*domain.User{}
 	err := runWithClient(c, func(cli *datastore.Client) error {
 		_, err := cli.GetAll(c, q, &users)
 		return err

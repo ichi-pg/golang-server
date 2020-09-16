@@ -4,6 +4,7 @@ import (
 	"github.com/ichi-pg/golang-server/internal/application"
 	"github.com/ichi-pg/golang-server/internal/infrastructure/datastore"
 	"github.com/ichi-pg/golang-server/internal/infrastructure/firebases"
+	"github.com/ichi-pg/golang-server/internal/infrastructure/redis"
 )
 
 type appInjector struct {
@@ -18,5 +19,11 @@ func (i appInjector) UserUsecase() application.UserUsecase {
 	return application.NewUserUsecase(
 		datastore.UserRepository(),
 		firebases.FirebaseRepository(),
+	)
+}
+
+func (i appInjector) RankingUsecase() application.RankingUsecase {
+	return application.NewRankingUsecase(
+		redis.RankingRepository(),
 	)
 }

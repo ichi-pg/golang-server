@@ -21,7 +21,7 @@ func TestQuery_User(t *testing.T) {
 	res, err := r.Query().User(c)
 	if assert.NoError(t, err) {
 		assert.Equal(t, &generated.User{
-			UserID:    string(mock.UserID),
+			ID:        string(mock.UserID),
 			Name:      string(mock.UserName),
 			CreatedAt: mock.UserCreateAt,
 		}, res)

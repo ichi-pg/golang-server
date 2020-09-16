@@ -6,8 +6,14 @@ import (
 	"time"
 )
 
+type Ranker struct {
+	UserID string `json:"userID"`
+	Rank   int64  `json:"rank"`
+	Score  int64  `json:"score"`
+}
+
 type User struct {
-	UserID    string    `json:"userID"`
+	ID        string    `json:"id"`
 	Name      string    `json:"name"`
 	CreatedAt time.Time `json:"createdAt"`
 }

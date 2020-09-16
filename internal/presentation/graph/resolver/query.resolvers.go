@@ -6,11 +6,17 @@ package resolver
 import (
 	"context"
 
+	"github.com/ichi-pg/golang-server/internal/application"
 	"github.com/ichi-pg/golang-server/internal/presentation/graph/generated"
 )
 
 func (r *queryResolver) User(ctx context.Context) (*generated.User, error) {
 	return newUser(r.Resolver.User), nil
+}
+
+func (r *queryResolver) Rankers(ctx context.Context, offset int64, limit int64) ([]*generated.Ranker, error) {
+	rankers, err := r.Injector.RankingUsecase().Rankers(application.NewAuthContext(ctx, r.Logger), offset, limit)
+	return newRankers(rankers), err
 }
 
 // Query returns generated.QueryResolver implementation.

@@ -19,3 +19,9 @@ func (i mockInjector) UserUsecase() application.UserUsecase {
 		mock.FirebaseRepository(),
 	)
 }
+
+func (i mockInjector) RankingUsecase() application.RankingUsecase {
+	return application.NewRankingUsecase(
+		mock.RankingRepository(),
+	)
+}

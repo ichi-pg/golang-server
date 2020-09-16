@@ -7,6 +7,7 @@ require (
 	cloud.google.com/go/firestore v1.3.0 // indirect
 	firebase.google.com/go v3.13.0+incompatible
 	github.com/99designs/gqlgen v0.12.2
+	github.com/go-redis/redis v6.15.9+incompatible
 	github.com/ichi-pg/golang-middleware v1.0.0
 	github.com/labstack/echo/v4 v4.1.17
 	github.com/satori/go.uuid v1.2.0

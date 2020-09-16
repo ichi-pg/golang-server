@@ -1,7 +1,13 @@
 type User {
-  userID: ID!
+  id: ID!
   name: String!
   createdAt: Time!
+}
+
+type Ranker {
+  userID: ID!
+  rank: Int!
+  score: Int!
 }
 
 scalar Time

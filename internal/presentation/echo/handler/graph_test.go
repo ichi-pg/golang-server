@@ -91,8 +91,7 @@ func TestGraphQuery(t *testing.T) {
 		}
 	}
 
-	// Test case: Internal server error.
-	//TODO
+	//TODO Test case: Internal server error.
 
 	// Test case: Validation error.
 	{
