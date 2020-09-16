@@ -8,7 +8,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: node:10.18-jessie
     services:
       redis:
         image: redis
@@ -17,6 +16,8 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+        ports:
+          - 6379:6379
     steps:
       - uses: actions/checkout@v2
 
@@ -30,7 +31,7 @@ jobs:
         env:
           PROJECT_ID: ${{ secrets.PROJECT_ID_DEV }}
           NAMESPACE: ${{ github.sha }}
-          REDIS_ADDR: redis:6379
+          REDIS_ADDR: localhost:6379
 
       - name: deploy
         run: |
