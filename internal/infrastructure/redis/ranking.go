@@ -2,6 +2,7 @@ package redis
 
 import (
 	"context"
+	"math"
 
 	"github.com/go-redis/redis"
 	"github.com/ichi-pg/golang-server/internal/domain"
@@ -24,11 +25,22 @@ func (r rankingRepository) Rankers(c context.Context, offset, limit int64) ([]*d
 		if err != nil {
 			return err
 		}
+		prevRank := offset + 1
+		prevScore := int64(math.MinInt64)
 		for i, v := range res {
+			var rank int64
+			score := int64(v.Score)
+			if prevScore == score {
+				rank = prevRank
+			} else {
+				rank = offset + int64(i) + 1
+				prevRank = rank
+				prevScore = score
+			}
 			rankers = append(rankers, &domain.Ranker{
 				UserID: domain.UserID(v.Member.(string)),
-				Rank:   offset + int64(i),
-				Score:  int64(v.Score),
+				Rank:   rank,
+				Score:  score,
 			})
 		}
 		return nil
