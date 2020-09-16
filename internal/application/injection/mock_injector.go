@@ -8,7 +8,7 @@ import (
 type mockInjector struct {
 }
 
-// MockInjector はapplication層以下の依存関係を注入します。
+// MockInjector はapplication層以下のモックを注入します。
 func MockInjector() application.Injector {
 	return mockInjector{}
 }
