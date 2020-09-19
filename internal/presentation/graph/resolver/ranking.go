@@ -10,9 +10,9 @@ func newRanker(ranker *domain.Ranker) *generated.Ranker {
 		return nil
 	}
 	return &generated.Ranker{
-		UserID: string(ranker.UserID),
-		Rank:   ranker.Rank,
-		Score:  ranker.Score,
+		User:  newUser(&ranker.User),
+		Rank:  ranker.Rank,
+		Score: ranker.Score,
 	}
 }
 

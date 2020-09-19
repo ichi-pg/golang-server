@@ -14,16 +14,14 @@ import (
 func TestQuery_User(t *testing.T) {
 	t.Parallel()
 
-	mockUser := mock.NewUser()
 	c := context.Background()
-	r := NewResolver(logrus.NewEntry(logrus.New()), mockUser, injection.MockInjector())
+	r := NewResolver(logrus.NewEntry(logrus.New()), &mock.User, injection.MockInjector())
 
 	res, err := r.Query().User(c)
 	if assert.NoError(t, err) {
 		assert.Equal(t, res, &generated.User{
-			ID:        string(mock.UserID),
-			Name:      string(mock.UserName),
-			CreatedAt: mock.UserCreateAt,
+			ID:   string(mock.User.ID),
+			Name: string(mock.User.Name),
 		})
 	}
 }

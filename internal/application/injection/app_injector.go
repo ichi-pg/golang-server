@@ -24,6 +24,12 @@ func (i appInjector) UserUsecase() application.UserUsecase {
 
 func (i appInjector) RankingUsecase() application.RankingUsecase {
 	return application.NewRankingUsecase(
-		redis.RankingRepository(),
+		redis.RankingRepository(datastore.UserRepository()),
+	)
+}
+
+func (i appInjector) PaymentUsecase() application.PaymentUsecase {
+	return application.NewPaymentUsecase(
+		datastore.PaymentRepository(),
 	)
 }

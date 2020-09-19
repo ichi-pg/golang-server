@@ -11,11 +11,14 @@ import (
 const ranking = "ranking"
 
 type rankingRepository struct {
+	userRepo domain.UserRepository
 }
 
 // RankingRepository はRankingRepositoryのRedis実装を返します。
-func RankingRepository() domain.RankingRepository {
-	return rankingRepository{}
+func RankingRepository(userRepo domain.UserRepository) domain.RankingRepository {
+	return rankingRepository{
+		userRepo: userRepo,
+	}
 }
 
 func (r rankingRepository) add(c context.Context, userID domain.UserID, score int64) error {
@@ -46,10 +49,14 @@ func (r rankingRepository) Rankers(c context.Context, offset, limit int64) ([]do
 				prevRank = rank
 				prevScore = score
 			}
+			user, err := r.userRepo.ByUserID(c, domain.UserID(v.Member.(string)))
+			if err != nil {
+				return err
+			}
 			rankers = append(rankers, domain.Ranker{
-				UserID: domain.UserID(v.Member.(string)),
-				Rank:   rank,
-				Score:  score,
+				User:  *user,
+				Rank:  rank,
+				Score: score,
 			})
 		}
 		return nil

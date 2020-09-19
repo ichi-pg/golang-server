@@ -6,14 +6,34 @@ import (
 	"time"
 )
 
+type Item struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
+}
+
+type PaymentItem struct {
+	Item     *Item `json:"item"`
+	Price    int64 `json:"price"`
+	Quantity int64 `json:"quantity"`
+}
+
+type PaymentLog struct {
+	Item      *PaymentItem `json:"item"`
+	CreatedAt time.Time    `json:"createdAt"`
+}
+
+type PaymentLogs struct {
+	Nodes  []*PaymentLog `json:"nodes"`
+	Cursor string        `json:"cursor"`
+}
+
 type Ranker struct {
-	UserID string `json:"userID"`
-	Rank   int64  `json:"rank"`
-	Score  int64  `json:"score"`
+	User  *User `json:"user"`
+	Rank  int64 `json:"rank"`
+	Score int64 `json:"score"`
 }
 
 type User struct {
-	ID        string    `json:"id"`
-	Name      string    `json:"name"`
-	CreatedAt time.Time `json:"createdAt"`
+	ID   string `json:"id"`
+	Name string `json:"name"`
 }

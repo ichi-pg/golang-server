@@ -4,6 +4,5 @@ package application
 type Injector interface {
 	UserUsecase() UserUsecase
 	RankingUsecase() RankingUsecase
+	PaymentUsecase() PaymentUsecase
 }
-
-//TODO 購入モック（マスターデータ、アイテムリスト、Paymentログ、購入履歴ページング）

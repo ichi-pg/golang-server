@@ -21,19 +21,19 @@ func TestQuery_Rankers(t *testing.T) {
 	if assert.NoError(t, err) {
 		assert.Equal(t, res, []*generated.Ranker{
 			{
-				UserID: string(mock.UserID),
-				Rank:   1,
-				Score:  120,
+				User:  newUser(&mock.User),
+				Rank:  1,
+				Score: 120,
 			},
 			{
-				UserID: "aaaa",
-				Rank:   2,
-				Score:  100,
+				User:  newUser(&mock.RankingUserA),
+				Rank:  2,
+				Score: 100,
 			},
 			{
-				UserID: "bbbb",
-				Rank:   3,
-				Score:  80,
+				User:  newUser(&mock.RankingUserB),
+				Rank:  3,
+				Score: 80,
 			},
 		})
 	}

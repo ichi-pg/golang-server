@@ -1,13 +1,33 @@
 type User {
   id: ID!
   name: String!
-  createdAt: Time!
 }
 
 type Ranker {
-  userID: ID!
+  user: User!
   rank: Int!
   score: Int!
+}
+
+type Item {
+  id: ID!
+  name: String!
+}
+
+type PaymentItem {
+  item: Item!
+  price: Int!
+  quantity: Int!
+}
+
+type PaymentLog {
+  item: PaymentItem!
+  createdAt: Time!
+}
+
+type PaymentLogs {
+  nodes: [PaymentLog!]!
+  cursor: String!
 }
 
 scalar Time

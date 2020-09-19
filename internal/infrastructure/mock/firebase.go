@@ -7,9 +7,6 @@ import (
 	"github.com/ichi-pg/golang-server/internal/domain"
 )
 
-// FirebaseID はモックにおける正常系のIDです。
-const FirebaseID = domain.FirebaseID("74922948-a52b-4f7e-8d25-ffd02c9d0c44")
-
 // FirebaseToken はモックにおける正常系のトークンです。
 const FirebaseToken = domain.FirebaseToken("a7fa6b3b-c854-4a7b-b778-152cf55caf60")
 
@@ -29,7 +26,7 @@ func FirebaseRepository() domain.FirebaseRepository {
 
 func (s firebaseService) FirebaseID(c context.Context, token domain.FirebaseToken) (domain.FirebaseID, error) {
 	if token == FirebaseToken {
-		return FirebaseID, nil
+		return User.FirebaseID, nil
 	}
 	if token == NewFirebaseToken {
 		return NewFirebaseID, nil

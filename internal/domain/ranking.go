@@ -6,7 +6,7 @@ import (
 
 // Ranker はランキング内のユーザーです。
 type Ranker struct {
-	UserID
+	User  User
 	Rank  int64
 	Score int64
 }

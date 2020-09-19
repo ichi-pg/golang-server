@@ -1,4 +1,6 @@
 type Query {
   user: User!
   rankers(offset: Int!, limit: Int!): [Ranker!]!
+  paymentItems: [PaymentItem!]!
+  paymentLogs(cursor: String!): PaymentLogs!
 }

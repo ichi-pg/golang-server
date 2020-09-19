@@ -1,3 +1,4 @@
 type Mutation {
   updateUserName(name: String!): User!
+  pay(itemID: ID!): PaymentLog!
 }

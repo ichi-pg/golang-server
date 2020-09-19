@@ -35,3 +35,5 @@ func (s firebaseService) FirebaseID(c context.Context, token domain.FirebaseToke
 	}
 	return domain.FirebaseID(res.UID), nil
 }
+
+//TODO test code

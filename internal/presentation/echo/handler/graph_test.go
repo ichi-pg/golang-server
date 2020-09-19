@@ -21,7 +21,7 @@ func TestGraphQuery(t *testing.T) {
 
 	log := logrus.NewEntry(logrus.New())
 	i := injection.MockInjector()
-	user := mock.NewUser()
+	user := &mock.User
 	normalMutation := " mutation { updateUserName ( name : \\\"fuga\\\" ) { name } } "
 
 	// Test case: Get user.

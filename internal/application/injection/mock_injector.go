@@ -25,3 +25,9 @@ func (i mockInjector) RankingUsecase() application.RankingUsecase {
 		mock.RankingRepository(),
 	)
 }
+
+func (i mockInjector) PaymentUsecase() application.PaymentUsecase {
+	return application.NewPaymentUsecase(
+		mock.PaymentRepository(),
+	)
+}
