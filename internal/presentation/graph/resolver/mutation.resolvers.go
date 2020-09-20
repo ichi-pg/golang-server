@@ -17,7 +17,7 @@ func (r *mutationResolver) UpdateUserName(ctx context.Context, name string) (*ge
 	return newUser(user), err
 }
 
-func (r *mutationResolver) Pay(ctx context.Context, itemID string) (*generated.PaymentLog, error) {
+func (r *mutationResolver) Pay(ctx context.Context, paymentItemID string) (*generated.PaymentLog, error) {
 	panic(fmt.Errorf("not implemented"))
 }
 

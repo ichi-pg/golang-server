@@ -49,7 +49,7 @@ type ComplexityRoot struct {
 	}
 
 	Mutation struct {
-		Pay            func(childComplexity int, itemID string) int
+		Pay            func(childComplexity int, paymentItemID string) int
 		UpdateUserName func(childComplexity int, name string) int
 	}
 
@@ -90,7 +90,7 @@ type ComplexityRoot struct {
 
 type MutationResolver interface {
 	UpdateUserName(ctx context.Context, name string) (*User, error)
-	Pay(ctx context.Context, itemID string) (*PaymentLog, error)
+	Pay(ctx context.Context, paymentItemID string) (*PaymentLog, error)
 }
 type QueryResolver interface {
 	User(ctx context.Context) (*User, error)
@@ -138,7 +138,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.Pay(childComplexity, args["itemID"].(string)), true
+		return e.complexity.Mutation.Pay(childComplexity, args["paymentItemID"].(string)), true
 
 	case "Mutation.updateUserName":
 		if e.complexity.Mutation.UpdateUserName == nil {
@@ -374,7 +374,7 @@ scalar Time
 `, BuiltIn: false},
 	{Name: "api/graph/mutation.graphqls", Input: `type Mutation {
   updateUserName(name: String!): User!
-  pay(itemID: ID!): PaymentLog!
+  pay(paymentItemID: ID!): PaymentLog!
 }
 `, BuiltIn: false},
 	{Name: "api/graph/query.graphqls", Input: `type Query {
@@ -395,14 +395,14 @@ func (ec *executionContext) field_Mutation_pay_args(ctx context.Context, rawArgs
 	var err error
 	args := map[string]interface{}{}
 	var arg0 string
-	if tmp, ok := rawArgs["itemID"]; ok {
-		ctx := graphql.WithFieldInputContext(ctx, graphql.NewFieldInputWithField("itemID"))
+	if tmp, ok := rawArgs["paymentItemID"]; ok {
+		ctx := graphql.WithFieldInputContext(ctx, graphql.NewFieldInputWithField("paymentItemID"))
 		arg0, err = ec.unmarshalNID2string(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
 	}
-	args["itemID"] = arg0
+	args["paymentItemID"] = arg0
 	return args, nil
 }
 
@@ -646,7 +646,7 @@ func (ec *executionContext) _Mutation_pay(ctx context.Context, field graphql.Col
 	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().Pay(rctx, args["itemID"].(string))
+		return ec.resolvers.Mutation().Pay(rctx, args["paymentItemID"].(string))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
