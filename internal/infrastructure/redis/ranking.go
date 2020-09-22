@@ -8,7 +8,7 @@ import (
 	"github.com/ichi-pg/golang-server/internal/domain"
 )
 
-const ranking = "ranking"
+const rankingKey = "ranking"
 
 type rankingRepository struct {
 	userRepo domain.UserRepository
@@ -23,7 +23,7 @@ func RankingRepository(userRepo domain.UserRepository) domain.RankingRepository 
 
 func (r rankingRepository) add(c context.Context, userID domain.UserID, score int64) error {
 	return runWithClient(func(cli *redis.Client) error {
-		return cli.ZAdd(ranking, redis.Z{
+		return cli.ZAdd(rankingKey, redis.Z{
 			Member: string(userID),
 			Score:  float64(score),
 		}).Err()
@@ -33,7 +33,7 @@ func (r rankingRepository) add(c context.Context, userID domain.UserID, score in
 func (r rankingRepository) Rankers(c context.Context, offset, limit int64) ([]domain.Ranker, error) {
 	rankers := []domain.Ranker{}
 	err := runWithClient(func(cli *redis.Client) error {
-		res, err := cli.ZRevRangeWithScores(ranking, offset, offset+limit-1).Result()
+		res, err := cli.ZRevRangeWithScores(rankingKey, offset, offset+limit-1).Result()
 		if err != nil {
 			return err
 		}

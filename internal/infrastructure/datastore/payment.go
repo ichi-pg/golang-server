@@ -3,8 +3,11 @@ package datastore
 import (
 	"context"
 
+	"cloud.google.com/go/datastore"
 	"github.com/ichi-pg/golang-server/internal/domain"
 )
+
+const paymentLogKind = "User"
 
 type paymentRepository struct {
 }
@@ -19,7 +22,15 @@ func (r paymentRepository) Pay(c context.Context, user *domain.User, paymentItem
 }
 
 func (r paymentRepository) Logs(c context.Context, user *domain.User, cursor domain.Cursor) ([]domain.PaymentLog, domain.Cursor, error) {
-	panic("TODO")
+	logs := []domain.PaymentLog{}
+	nextCursor, err := runPagination(c,
+		newQuery(paymentLogKind).Ancestor(newKey(userKind, string(user.ID), nil)),
+		20, cursor,
+		func(it *datastore.Iterator) error {
+			log := domain.PaymentLog{}
+			_, err := it.Next(&log)
+			logs = append(logs, log)
+			return err
+		})
+	return logs, nextCursor, err
 }
-
-//TODO Test code

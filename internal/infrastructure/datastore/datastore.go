@@ -8,6 +8,7 @@ import (
 	submoduleEnv "github.com/ichi-pg/golang-middleware/env"
 	"github.com/ichi-pg/golang-server/internal/domain"
 	"github.com/ichi-pg/golang-server/internal/pkg/env"
+	"google.golang.org/api/iterator"
 )
 
 func runWithClient(c context.Context, f func(*datastore.Client) error) error {
@@ -31,4 +32,33 @@ func newKey(kind, name string, parent *datastore.Key) *datastore.Key {
 	key := datastore.NameKey(userKind, name, parent)
 	key.Namespace = os.Getenv(env.Namespace)
 	return key
+}
+
+func runPagination(c context.Context, q1 *datastore.Query, limit int, cursor domain.Cursor, next func(*datastore.Iterator) error) (domain.Cursor, error) {
+	q2 := q1.Limit(limit)
+	if !cursor.Empty() {
+		cursor, err := datastore.DecodeCursor(string(cursor))
+		if err != nil {
+			return "", err
+		}
+		q2 = q2.Start(cursor)
+	}
+	var nextCursor domain.Cursor
+	err := runWithClient(c, func(cli *datastore.Client) error {
+		it := cli.Run(c, q2)
+		var err error
+		for err == nil {
+			err = next(it)
+		}
+		if err != iterator.Done {
+			return err
+		}
+		cur, err := it.Cursor()
+		if err != nil {
+			return err
+		}
+		nextCursor = domain.Cursor(cur.String())
+		return nil
+	})
+	return nextCursor, err
 }
