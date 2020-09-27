@@ -14,7 +14,7 @@ func PaymentRepository() domain.PaymentRepository {
 	return paymentRepository{}
 }
 
-func (r paymentRepository) Pay(c context.Context, user *domain.User, paymentItemID domain.PaymentItemID) (*domain.PaymentLog, error) {
+func (r paymentRepository) Pay(c context.Context, user *domain.User, paymentItem *domain.PaymentItem) (*domain.PaymentLog, error) {
 	panic("TODO")
 }
 

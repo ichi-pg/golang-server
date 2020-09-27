@@ -29,5 +29,6 @@ func (i mockInjector) RankingUsecase() application.RankingUsecase {
 func (i mockInjector) PaymentUsecase() application.PaymentUsecase {
 	return application.NewPaymentUsecase(
 		mock.PaymentRepository(),
+		mock.MasterRepository(),
 	)
 }

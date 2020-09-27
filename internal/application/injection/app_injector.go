@@ -4,6 +4,7 @@ import (
 	"github.com/ichi-pg/golang-server/internal/application"
 	"github.com/ichi-pg/golang-server/internal/infrastructure/datastore"
 	"github.com/ichi-pg/golang-server/internal/infrastructure/firebases"
+	"github.com/ichi-pg/golang-server/internal/infrastructure/mock"
 	"github.com/ichi-pg/golang-server/internal/infrastructure/redis"
 )
 
@@ -30,6 +31,7 @@ func (i appInjector) RankingUsecase() application.RankingUsecase {
 
 func (i appInjector) PaymentUsecase() application.PaymentUsecase {
 	return application.NewPaymentUsecase(
-		datastore.PaymentRepository(),
+		datastore.PaymentRepository(mock.MasterRepository()),
+		mock.MasterRepository(),
 	)
 }

@@ -12,6 +12,7 @@ type (
 
 // PaymentItem は課金アイテムの値段と個数です。
 type PaymentItem struct {
+	ID       PaymentItemID
 	Item     Item
 	Price    int64
 	Quantity int64
@@ -25,6 +26,6 @@ type PaymentLog struct {
 
 // PaymentRepository は課金のCRUDを抽象化します。
 type PaymentRepository interface {
-	Pay(c context.Context, user *User, paymentItemID PaymentItemID) (*PaymentLog, error)
+	Pay(c context.Context, user *User, paymentItem *PaymentItem) (*PaymentLog, error)
 	Logs(c context.Context, user *User, cursor Cursor) ([]PaymentLog, Cursor, error)
 }

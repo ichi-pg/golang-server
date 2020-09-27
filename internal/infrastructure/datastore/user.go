@@ -18,7 +18,7 @@ func UserRepository() domain.UserRepository {
 }
 
 func (r userRepository) ByUserID(c context.Context, userID domain.UserID) (*domain.User, error) {
-	key := newKey(userKind, string(userID), nil)
+	key := userKey(userID)
 	user := &domain.User{}
 	err := runWithClient(c, func(cli *datastore.Client) error {
 		return cli.Get(c, key, user)
@@ -62,7 +62,7 @@ func (r userRepository) CreateFirebaseUser(c context.Context, firebaseID domain.
 }
 
 func (r userRepository) Update(c context.Context, user *domain.User) error {
-	key := newKey(userKind, string(user.ID), nil)
+	key := userKey(user.ID)
 	return runWithClient(c, func(cli *datastore.Client) error {
 		_, err := cli.Put(c, key, user)
 		return err
@@ -70,8 +70,12 @@ func (r userRepository) Update(c context.Context, user *domain.User) error {
 }
 
 func (r userRepository) delete(c context.Context, userID domain.UserID) error {
-	key := newKey(userKind, string(userID), nil)
+	key := userKey(userID)
 	return runWithClient(c, func(cli *datastore.Client) error {
 		return cli.Delete(c, key)
 	})
+}
+
+func userKey(userID domain.UserID) *datastore.Key {
+	return newKey(userKind, string(userID), nil)
 }
