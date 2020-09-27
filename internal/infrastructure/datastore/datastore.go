@@ -24,6 +24,25 @@ func runWithClient(c context.Context, f func(*datastore.Client) error) error {
 	return err
 }
 
+func runWithTransaction(c context.Context, f func(*datastore.Transaction) error) error {
+	return runWithClient(c, func(cli *datastore.Client) error {
+		tx, err := cli.NewTransaction(c)
+		if err != nil {
+			return err
+		}
+		err = f(tx)
+		if err != nil {
+			e := tx.Rollback()
+			if e != nil {
+				return e
+			}
+			return err
+		}
+		_, err = tx.Commit()
+		return err
+	})
+}
+
 func newQuery(kind string) *datastore.Query {
 	return datastore.NewQuery(kind).Namespace(os.Getenv(env.Namespace))
 }

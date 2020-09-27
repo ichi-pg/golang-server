@@ -26,23 +26,24 @@ func (r paymentRepository) Pay(c context.Context, user *domain.User, paymentItem
 		Item:      *paymentItem,
 		CreatedAt: time.Now(),
 	}
-	err := runWithClient(c, func(cli *datastore.Client) error {
+	err := runWithTransaction(c, func(tx *datastore.Transaction) error {
 		key := itemInventoryKey(user.ID, paymentItem.Item.ID)
 		inventory := domain.ItemInventory{
 			UserID:   user.ID,
 			ItemID:   paymentItem.Item.ID,
 			Quantity: 0,
 		}
-		err := cli.Get(c, key, &inventory)
+		err := tx.Get(key, &inventory)
 		if err != datastore.ErrNoSuchEntity {
 			return err
 		}
 		inventory.Quantity += paymentItem.Quantity
-		_, err = cli.Put(c, key, &inventory)
+		_, err = tx.Put(key, &inventory)
 		if err != nil {
 			return err
 		}
-		_, err = cli.Put(c, newKey(paymentLogKind, log.CreatedAt.String(), userKey(user.ID)), &log)
+		_, err = tx.Put(newKey(paymentLogKind, log.CreatedAt.String(), userKey(user.ID)), &log)
+		//TODO 支払い
 		return err
 	})
 	return &log, err
